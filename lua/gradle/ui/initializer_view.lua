@@ -168,6 +168,7 @@ function InitializerView:_create_java_version_component()
     end,
   })
   local nodes = {
+    Tree.Node({ text = ' Java 25 ', value = 25 }),
     Tree.Node({ text = ' Java 21 ', value = 21 }),
     Tree.Node({ text = ' Java 17 ', value = 17 }),
     Tree.Node({ text = ' Java 8 ', value = 8 }),
@@ -359,14 +360,8 @@ function InitializerView:_create_project()
   local _callback = function(state)
     vim.schedule(function()
       if state == Utils.SUCCEED_STATE then
-        local choice = vim.fn.confirm(
-          'Project created successfully \nDo you want to switch to the New Project?',
-          '&Yes\n&No'
-        )
-        if choice == 1 then
-          vim.api.nvim_set_current_dir(directory:absolute())
-          require('gradle').reset_projects_view()
-        end
+        vim.api.nvim_set_current_dir(directory:absolute())
+        require('gradle').reset_projects_view()
       elseif state == Utils.FAILED_STATE then
         vim.notify('Error creating  project: ' .. vim.trim(self._project_name))
       end
